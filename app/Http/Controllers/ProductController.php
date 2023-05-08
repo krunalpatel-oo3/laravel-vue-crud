@@ -34,7 +34,7 @@ class ProductController extends Controller
             'price' => 'required'
         ]);
 
-        dd($request->all());
+        
 
         return Product::create($request->all());
     }
