@@ -6,6 +6,7 @@
         <div class="mb-3">
           <label for="name" class="form-label">Name:</label>
           <input class="form-control" type="text" id="name" v-model="product.name" required />
+          <input class="form-control" type="text" id="names" v-model="product.names" required />
         </div>
         <div class="mb-3">
           <label for="description" class="form-label">Description:</label>
@@ -17,18 +18,18 @@
         </div>
         <div class="mb-3">
           <label for="price" class="form-label">Is home?: </label>
-          <input v-model="product.is_home" type="radio" :value="1" name="is_home" />
+          <input v-model="product.is_home" type="radio" value="1" name="is_home" />
           <label class="ml-5" for="1">Yes</label>
-          <input v-model="product.is_home" type="radio" :value="0" name="is_home" checked />
+          <input v-model="product.is_home" type="radio" value="0" name="is_home" checked />
           <label class="ml-5" for="0">No</label>
         </div>
         <div class="mb-3">
           <label class="form-label">Colors: </label>&nbsp;
-          <input type="checkbox" v-model="colors_input" name="colors[]" :value="red" id="red_color" />
+          <input type="checkbox" v-model="product.colors_input" name="colors[]" value="red" id="red_color" />
           <label class="form-check-label" for="red_color">Red</label>&nbsp;
-          <input type="checkbox" v-model="colors_input" :value="blue" name="colors[]" id="blue_color"/>
+          <input type="checkbox" v-model="product.colors_input" value="blue" name="colors[]" id="blue_color"/>
           <label class="form-check-label" for="blue_color">Blue</label>&nbsp;
-          <input type="checkbox" v-model="colors_input" :value="green" name="colors[]" id="green_color"/>
+          <input type="checkbox" v-model="product.colors_input" value="green" name="colors[]" id="green_color"/>
           <label class="form-check-label" for="green_color">Green</label>
         </div>
         <button type="submit" v-if="isNewProduct" class="btn btn-primary">Add Product</button>
@@ -48,7 +49,8 @@ export default {
         description: '',
         price: 0,
         is_home: '',
-        colors_input: []
+        colors_input: [],
+        names: '',
       }
     }
   },
