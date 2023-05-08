@@ -14,7 +14,7 @@
                 <tr v-for="product in products" :key="product.id">
                     <td>{{ product.id }}</td>
                     <td>{{ product.name }}</td>
-                    <td>{{ product.description }}</td>
+                    <td>{{product.description.length > 80 ? product.description.substring(0,80)+'...' : product.description  }}</td>
                     <td>{{ product.price }}</td>
                     <td>
                       <div class="row gap-3">
@@ -31,6 +31,8 @@
 
 <script>
 import axios from 'axios';
+import Swal from 'sweetalert2'
+
 export default {
   data() {
     return {
@@ -45,5 +47,52 @@ export default {
       console.error(error);
     }
   },
+  methods:{
+    async deleteProduct(id){
+      Swal.fire({
+        title: 'Are you sure?',
+        text: "You won't be able to revert this!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete it!'
+      }).then((result) => {
+        if (result.value) {
+          try{
+            const response = axios.delete(`/api/products/${id}`).then(response => {
+            if(response.data.status){
+              const Toast = Swal.mixin({
+                  toast: true,
+                  position: 'top-end',
+                  showConfirmButton: false,
+                  timer: 3000,
+                  timerProgressBar: true,
+                  didOpen: (toast) => {
+                    toast.addEventListener('mouseenter', Swal.stopTimer)
+                    toast.addEventListener('mouseleave', Swal.resumeTimer)
+                  }
+                })
+
+                Toast.fire({
+                  icon: 'success',
+                  title: 'The record has been deleted successfully'
+                })
+              this.products = this.products.filter(product => product.id !== id);
+            }else{
+              Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'Something went wrong!'
+              });
+            }
+          });        
+          }catch(error){
+            console.log(error);
+          }
+        }
+      });
+    }
+  }
 }
 </script>

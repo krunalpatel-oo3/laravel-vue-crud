@@ -12,7 +12,7 @@ class ProductController extends Controller
      */
     public function index()
     {
-        return Product::all();
+        return Product::orderBy('id', 'desc')->get();
     }
 
     /**
@@ -34,6 +34,8 @@ class ProductController extends Controller
             'price' => 'required'
         ]);
 
+        dd($request->all());
+
         return Product::create($request->all());
     }
 
@@ -42,7 +44,7 @@ class ProductController extends Controller
      */
     public function show(Product $product)
     {
-        //
+        return $product;
     }
 
     /**
@@ -50,7 +52,6 @@ class ProductController extends Controller
      */
     public function edit(Product $product)
     {
-        //
     }
 
     /**
@@ -58,7 +59,15 @@ class ProductController extends Controller
      */
     public function update(Request $request, Product $product)
     {
-        //
+        $request->validate([
+            'name' => 'required',
+            'description' => 'required',
+            'price' => 'required'
+        ]);
+        
+        $product->update($request->all());
+
+        return $product;
     }
 
     /**
@@ -66,6 +75,7 @@ class ProductController extends Controller
      */
     public function destroy(Product $product)
     {
-        //
+        $product->delete();
+        return response()->json(['status' =>true, 'message' => 'Product deleted successfully.']);
     }
 }
